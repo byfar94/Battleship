@@ -1,62 +1,4 @@
-import _ from "lodash";
-import "./style.css";
-export { Ship, Space, GameBoard };
-
-class Ship {
-  constructor(length) {
-    this.length = length;
-    this.hits = 0;
-    this.sunk = false;
-  }
-  hit() {
-    this.hits++;
-  }
-  sink() {
-    if (this.hits == this.length) {
-      this.sunk = true;
-    } else {
-      this.sunk = false;
-    }
-  }
-}
-
-class Space {
-  constructor(row, column) {
-    this.row = row;
-    this.column = column;
-    this.hasShip = null;
-    this.shipName = {};
-    this.wasHit = false;
-  }
-}
-
-class GameBoard {
-  constructor() {
-    this.boardArray = [];
-    for (let row = 0; row < 10; row++) {
-      for (let col = 0; col < 10; col++) {
-        let square = new Space(row, col);
-        this.boardArray.push(square);
-      }
-    }
-  }
-  placeShip(ship, spaceIndex) {
-    for (let i = spaceIndex; i <= parseInt(ship.length - 1); i++) {
-      this.boardArray[i].hasShip = true;
-      this.boardArray[i].shipName = ship;
-    }
-  }
-  receiveAttack(x, y) {
-    this.boardArray.forEach((square) => {
-      console.log(square);
-      if (square.row == x && square.column == y && square.wasHit == false) {
-        square.wasHit = true;
-        square.shipName.hit();
-        square.shipName.sink();
-      }
-    });
-  }
-}
+import { Ship, Space, GameBoard } from "./app";
 
 //create boards
 const playerBoard = new GameBoard();
@@ -80,7 +22,6 @@ playerBoard.placeShip(playerBattleship, 0);
 playerBoard.receiveAttack(0, 0);
 playerBoard.receiveAttack(0, 1);
 playerBoard.receiveAttack(0, 2);
-playerBoard.receiveAttack(0, 3);
 
 console.log(playerBattleship.length);
 console.log(playerBattleship.hits);
@@ -92,3 +33,62 @@ console.log(playerBoard.boardArray);
 console.log(playerBoard.boardArray.length);
 console.log(playerBoard.boardArray[0]);
 console.log(playerBattleship);
+
+// <----------------------------------------------------> //
+
+function createDomEl(el, cls) {
+  let newEl = document.createElement(el);
+  newEl.classList.add(cls);
+  return newEl;
+}
+
+//create class for DOM board
+
+class DOMBoard {
+  constructor(array, container) {
+    this.array = array;
+    this.container = container;
+    this.spacesDOMArray = [];
+  }
+  createDOMBoard(el, cls) {
+    this.array.forEach((item) => {
+      let space = createDomEl(el, cls);
+      let row = item.row;
+      let column = item.column;
+      space.innerText = `${row}, ${column}`;
+      this.container.append(space);
+      this.spacesDOMArray.push(space);
+    });
+  }
+  displayHits() {
+    for (let i = 0; i < this.array.length; i++) {
+      if (this.array[i].wasHit == true) {
+        this.spacesDOMArray[i].style.backgroundColor = "red";
+      }
+    }
+  }
+}
+
+function renderBoards() {
+  //containers
+  const boardContainer = createDomEl("section", "board-container");
+  const playerBoardContain = createDomEl("section", "player-board-contain");
+  const computerBoardContain = createDomEl("section", "computer-board-contain");
+  document.body.append(boardContainer);
+  boardContainer.append(playerBoardContain);
+  boardContainer.append(computerBoardContain);
+
+  //player Board
+  let playerDOMBoard = new DOMBoard(playerBoard.boardArray, playerBoardContain);
+  playerDOMBoard.createDOMBoard("div", "player-board-DOM");
+  console.log(playerDOMBoard);
+  playerDOMBoard.displayHits();
+
+  //computer board
+  let computerDOMBoard = new DOMBoard(
+    playerBoard.boardArray,
+    computerBoardContain
+  );
+  computerDOMBoard.createDOMBoard("div", "computer-board-DOM");
+}
+renderBoards();

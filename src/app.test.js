@@ -1,5 +1,5 @@
 import { experiments } from "webpack";
-import { Ship, Space, GameBoard } from "./index";
+import { Ship, Space, GameBoard } from "./app";
 
 test("Ship class will create an object with a length equal to parameter, hits = 0, sunk = false", () => {
   expect(new Ship(3)).toEqual({
