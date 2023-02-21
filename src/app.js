@@ -1,6 +1,4 @@
-import _ from "lodash";
-import "./style.css";
-export { Ship, Space, GameBoard };
+export { Ship, Space, GameBoard, Player, Game };
 
 class Ship {
   constructor(length) {
@@ -24,8 +22,8 @@ class Space {
   constructor(row, column) {
     this.row = row;
     this.column = column;
-    this.hasShip = null;
-    this.shipName = {};
+    this.hasShip = false;
+    this.shipName = null;
     this.wasHit = false;
   }
 }
@@ -48,12 +46,43 @@ class GameBoard {
   }
   receiveAttack(x, y) {
     this.boardArray.forEach((square) => {
-      console.log(square);
       if (square.row == x && square.column == y && square.wasHit == false) {
         square.wasHit = true;
-        square.shipName.hit();
-        square.shipName.sink();
+        if (square.hasShip == true) {
+          square.shipName.hit();
+          square.shipName.sink();
+        }
       }
     });
+  }
+}
+
+class Player {
+  constructor(name) {
+    this.name = name;
+    this.shipArray = [];
+    this.sinkCount = 0;
+    this.lost = false;
+  }
+  randomMove(board) {
+    let numRow = Math.floor(Math.random() * 10);
+    let numCol = Math.floor(Math.random() * 10);
+    return board.receiveAttack(numRow, numCol);
+  }
+  checkIfAllSunk() {
+    this.shipArray.forEach((ship) => {
+      if (ship.sunk == true) {
+        this.sinkCount++;
+      }
+    });
+    if (this.sinkCount >= 5) {
+      this.lost = true;
+    }
+  }
+}
+
+class Game {
+  constructor() {
+    this.turnCounter = 0;
   }
 }
