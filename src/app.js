@@ -39,9 +39,10 @@ class GameBoard {
     }
   }
   placeShip(ship, spaceIndex) {
-    for (let i = spaceIndex; i <= parseInt(ship.length - 1); i++) {
-      this.boardArray[i].hasShip = true;
-      this.boardArray[i].shipName = ship;
+    for (let i = 0; i <= parseInt(ship.length - 1); i++) {
+      this.boardArray[spaceIndex].hasShip = true;
+      this.boardArray[spaceIndex].shipName = ship;
+      spaceIndex++;
     }
   }
   receiveAttack(x, y) {
