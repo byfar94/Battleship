@@ -72,8 +72,6 @@ function allowAttack() {
   playerDOMBoard.computerAttack(gameOne, computerDOMBoard.container);
 }
 
-allowAttack();
-
 //checks if values from one array inlcudes values from another
 
 function checkArrays(array1, array2) {
@@ -116,7 +114,6 @@ function randomlyPlaceShips(gameBoard, player, iteration, used) {
   console.log(gameBoard.boardArray);
 }
 
-randomlyPlaceShips(playerBoard, playerOne, 0, usedShipSpacesPlayer);
 randomlyPlaceShips(computerBoard, computer, 0, usedShipSpacesComputer);
 
 //add game over key  value pair to game that can be true or false if someone wins make it true. Only allow checkwinner to run if this is false. ******** possibly put usedShipSpaces on a gameBoard class
@@ -136,3 +133,30 @@ function checkWinner() {
   console.log("check winner function ran");
 }
 checkWinner();
+
+function renderStartScreen() {
+  let contain = createDomEl("section", "btn-section");
+  let containBtn = createDomEl("div", "button-contain");
+  let btnPlaceShip = createDomEl("button", "place-ships-btn");
+  btnPlaceShip.innerText = "Randomly Place Ships";
+  let btnStart = createDomEl("button", "start-game-btn");
+  btnStart.innerText = "Start Game";
+  document.body.append(contain);
+  contain.append(containBtn);
+  containBtn.append(btnPlaceShip);
+  containBtn.append(btnStart);
+
+  btnPlaceShip.addEventListener("click", () => {
+    playerBoard.clearShips();
+    usedShipSpacesPlayer = [];
+    randomlyPlaceShips(playerBoard, playerOne, 0, usedShipSpacesPlayer);
+    playerDOMBoard.displayShips();
+  });
+
+  btnStart.addEventListener("click", () => {
+    allowAttack();
+    containBtn.classList.add("hide");
+  });
+}
+
+renderStartScreen();

@@ -110,3 +110,29 @@ select {
   width: 3rem;
   height: 3rem;
 }
+
+/* buttons  */
+
+.btn-section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.button-contain {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 20rem;
+}
+
+.place-ship-button,
+.start-game-button {
+  min-width: 5rem;
+  min-height: 5rem;
+}
+
+/* Hide class */
+
+.hide {
+  display: none;
+}

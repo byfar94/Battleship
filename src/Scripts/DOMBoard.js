@@ -26,6 +26,15 @@ class DOMBoard {
       }
     }
   }
+  displayShips() {
+    for (let i = 0; i < this.spacesDOMArray.length; i++) {
+      if (this.array[i].hasShip == true) {
+        this.spacesDOMArray[i].style.backgroundColor = "lightblue";
+      } else if (this.array[i].hasShip == false) {
+        this.spacesDOMArray[i].style.backgroundColor = null;
+      }
+    }
+  }
   playerAttack(game) {
     const movesUsedPlayer = [];
     //add if statement of if gameCount = even you can execute this event listener
@@ -86,17 +95,4 @@ function createDomEl(el, cls) {
   let clsTrim = clsStr.replace(/^\s+|\s+$/gm, "");
   newEl.classList.add(clsTrim);
   return newEl;
-}
-
-//add game over key  value pair to game that can be true or false if someone wins make it true. Only allow checkwinner to run if this is false. ******** possibly put usedShipSpaces on a gameBoard class
-function checkWinner() {
-  playerOne.checkIfAllSunk();
-  computer.checkIfAllSunk();
-  if (playerOne.lost == true) {
-    alert("You Lost");
-  }
-  if (computer.lost == true) {
-    alert("You Won");
-  }
-  console.log(computer.sinkCount);
 }

@@ -29,4 +29,9 @@ class GameBoard {
       }
     });
   }
+  clearShips() {
+    this.boardArray.forEach((square) => {
+      square.hasShip = false;
+    });
+  }
 }
